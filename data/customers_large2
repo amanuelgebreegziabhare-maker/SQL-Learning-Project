@@ -1,0 +1,14 @@
+INSERT INTO customers (customer_id, first_name, last_name, email, country, created_at)
+SELECT
+    seq,
+    CONCAT('First', seq),
+    CONCAT('Last', seq),
+    CONCAT('user', seq, '@example.com'),
+    CASE WHEN seq % 5 = 0 THEN 'USA'
+         WHEN seq % 5 = 1 THEN 'UK'
+         WHEN seq % 5 = 2 THEN 'UAE'
+         WHEN seq % 5 = 3 THEN 'India'
+         ELSE 'Germany'
+    END,
+    DATE '2024-01-01' + (seq % 120)
+FROM generate_series(1, 10000) AS seq;
