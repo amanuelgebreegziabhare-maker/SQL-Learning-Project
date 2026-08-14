@@ -1,0 +1,27 @@
+name: Update Progress Summary
+
+on:
+  push:
+    paths:
+      - 'solutions/**/*.sql'
+
+jobs:
+  update-progress:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Count completed exercises
+        run: |
+          COUNT=$(find solutions -name "*.sql" | wc -l)
+          echo "Completed SQL Exercises: $COUNT" > progress-summary.txt
+
+      - name: Commit progress summary
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add progress-summary.txt
+          git commit -m "Updated progress summary"
+          git push

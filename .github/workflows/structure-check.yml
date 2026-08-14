@@ -1,0 +1,31 @@
+name: Validate Project Structure
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  check-structure:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate folder structure
+        run: |
+          REQUIRED_DIRS=(
+            "curriculum"
+            "exercises"
+            "solutions"
+          )
+
+          for DIR in "${REQUIRED_DIRS[@]}"; do
+            if [ ! -d "$DIR" ]; then
+              echo "❌ Missing required directory: $DIR"
+              exit 1
+            fi
+          done
+
+          echo "✔ Folder structure is valid."
